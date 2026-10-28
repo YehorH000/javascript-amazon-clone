@@ -1,3 +1,5 @@
+import { cart } from '../data/cart.js'
+
 let productsHTML = ''
 
 products.forEach((product) => {
@@ -25,7 +27,7 @@ products.forEach((product) => {
         <div class="product-price">$${(product.priceCents / 100).toFixed(2)}</div>
 
         <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -41,7 +43,7 @@ products.forEach((product) => {
 
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart">
+        <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png" />
             Added
         </div>
@@ -56,17 +58,25 @@ products.forEach((product) => {
 document.querySelector('.js-products-grid').innerHTML = productsHTML
 
 let cartHTML = ''
+let intervalId
 
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
         // console.log(button.dataset.productName)
-        const productId = button.dataset.productId
+        // const productId = button.dataset.productId
+        const { productId } = button.dataset
         const element = cart.find((item) => item.productId === productId)
+        const selectorQuantity = document.querySelector(
+            `.js-quantity-selector-${productId}`,
+        ).value
+        const addedMesNotification = document.querySelector(
+            `.js-added-to-cart-${productId}`,
+        )
 
         // console.log(element)
 
         if (element) {
-            element.quantity += 1
+            element.quantity += Number(selectorQuantity)
         } else {
             cart.push({ productId, quantity: 1 })
         }
@@ -77,5 +87,12 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
         }
 
         document.querySelector('.js-cart-quantity').innerHTML = totalQuantity
+
+        // Notification "Added"
+        addedMesNotification.classList.add('is-visible')
+        clearTimeout(intervalId)
+        intervalId = setTimeout(() => {
+            addedMesNotification.classList.remove('is-visible')
+        }, 2000)
     })
 })
