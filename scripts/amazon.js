@@ -63,13 +63,19 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
         const productId = button.dataset.productId
         const element = cart.find((item) => item.productId === productId)
 
-        console.log(element)
+        // console.log(element)
 
         if (element) {
             element.quantity += 1
         } else {
             cart.push({ productId, quantity: 1 })
         }
-        console.log(cart)
+
+        let totalQuantity = 0
+        for (const item of cart) {
+            totalQuantity += item.quantity
+        }
+
+        document.querySelector('.js-cart-quantity').innerHTML = totalQuantity
     })
 })
