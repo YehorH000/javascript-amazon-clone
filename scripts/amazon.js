@@ -1,4 +1,4 @@
-import { cart } from '../data/cart.js'
+import { cart, addToCart } from '../data/cart.js'
 import { products } from '../data/products.js'
 
 let productsHTML = ''
@@ -59,41 +59,36 @@ products.forEach((product) => {
 document.querySelector('.js-products-grid').innerHTML = productsHTML
 
 let cartHTML = ''
-let intervalId
+let timeoutId
+
+function updateCartQuantity() {
+    let totalQuantity = 0
+    for (const item of cart) {
+        totalQuantity += item.quantity
+    }
+
+    document.querySelector('.js-cart-quantity').innerHTML = totalQuantity
+}
+
+function updateCartNotification(productId) {
+    const addedMesNotification = document.querySelector(
+        `.js-added-to-cart-${productId}`,
+    )
+    addedMesNotification.classList.add('is-visible')
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => {
+        addedMesNotification.classList.remove('is-visible')
+    }, 2000)
+}
 
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
         // console.log(button.dataset.productName)
         // const productId = button.dataset.productId
         const { productId } = button.dataset
-        const element = cart.find((item) => item.productId === productId)
-        const selectorQuantity = document.querySelector(
-            `.js-quantity-selector-${productId}`,
-        ).value
-        const addedMesNotification = document.querySelector(
-            `.js-added-to-cart-${productId}`,
-        )
 
-        // console.log(element)
-
-        if (element) {
-            element.quantity += Number(selectorQuantity)
-        } else {
-            cart.push({ productId, quantity: 1 })
-        }
-
-        let totalQuantity = 0
-        for (const item of cart) {
-            totalQuantity += item.quantity
-        }
-
-        document.querySelector('.js-cart-quantity').innerHTML = totalQuantity
-
-        // Notification "Added"
-        addedMesNotification.classList.add('is-visible')
-        clearTimeout(intervalId)
-        intervalId = setTimeout(() => {
-            addedMesNotification.classList.remove('is-visible')
-        }, 2000)
+        addToCart(productId)
+        updateCartQuantity()
+        updateCartNotification(productId)
     })
 })
