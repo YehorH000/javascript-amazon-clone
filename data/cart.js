@@ -1,4 +1,4 @@
-export const cart = [
+export let cart = [
     {
         id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
         image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
@@ -33,4 +33,14 @@ export function addToCart(productId) {
     } else {
         cart.push({ productId, quantity: 1 })
     }
+}
+
+export function removeFromCart(productId) {
+    const newCart = []
+    cart.forEach((cartItem) => {
+        if (carItem.productId !== productId) {
+            newCart.push(cartItem)
+        }
+    })
+    cart = newCart
 }
