@@ -6,6 +6,7 @@ let productsInCartHTML = ''
 
 cart.forEach((item) => {
     const element = products.find((product) => product.id === item.id)
+    console.log(element.id)
     productsInCartHTML += `
     <div class="cart-item-container js-cart-item-container-${element.id}">
         <div class="delivery-date">
@@ -26,7 +27,7 @@ cart.forEach((item) => {
                 <div class="product-quantity">
                     <span>
                         Quantity:
-                        <span class="quantity-label">${element.quantity}</span>
+                        <span class="quantity-label">${item.quantity}</span>
                     </span>
                     <span
                         class="update-quantity-link link-primary"

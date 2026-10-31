@@ -1,4 +1,4 @@
-export let cart = [
+export let cart = JSON.parse(localStorage.getItem('cart')) || [
     {
         id: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
         image: 'images/products/athletic-cotton-socks-6-pairs.jpg',
@@ -24,23 +24,31 @@ export let cart = [
 ]
 
 export function addToCart(productId) {
-    const element = cart.find((item) => item.productId === productId)
+    const element = cart.find((item) => item.id === productId)
     const selectorQuantity = document.querySelector(
         `.js-quantity-selector-${productId}`,
     ).value
     if (element) {
         element.quantity += Number(selectorQuantity)
     } else {
-        cart.push({ productId, quantity: 1 })
+        cart.push({ id: productId, quantity: 1 })
     }
+
+    saveToStorage()
 }
 
 export function removeFromCart(productId) {
     const newCart = []
     cart.forEach((cartItem) => {
-        if (cartItem.productId !== productId) {
+        if (cartItem.id !== productId) {
             newCart.push(cartItem)
         }
     })
     cart = newCart
+    // console.log(JSON.stringify(cart))
+    saveToStorage()
+}
+
+export function saveToStorage() {
+    localStorage.setItem('cart', JSON.stringify(cart))
 }

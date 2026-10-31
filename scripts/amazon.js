@@ -62,6 +62,8 @@ document.querySelector('.js-products-grid').innerHTML = productsHTML
 let cartHTML = ''
 let timeoutId
 
+updateCartQuantity()
+
 function updateCartQuantity() {
     let totalQuantity = 0
     for (const item of cart) {
