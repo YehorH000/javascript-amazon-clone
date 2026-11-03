@@ -1,15 +1,17 @@
 import {
     cart,
     removeFromCart,
-    getCartQuantity,
     saveToStorage,
     updateDeliveryOption,
 } from '../../data/cart.js'
 import { products } from '../../data/products.js'
 import { formatCurrency } from '../utils/money.js'
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
-import { deliveryOptions } from '../../data/deliveryOptions.js'
+import {
+    deliveryOptions,
+    calculateDeliveryDate,
+} from '../../data/deliveryOptions.js'
 import { renderPaymentSummary } from './paymentSummary.js'
+import { updateCartQuantity } from './checkoutHeader.js'
 
 export function renderOrderSummary() {
     let productsInCartHTML = ''
@@ -20,14 +22,12 @@ export function renderOrderSummary() {
         const deliveryOption = deliveryOptions.find(
             (option) => deliveryOptionId === option.id,
         )
-        const today = dayjs()
-        const deliveryDate = today.add(deliveryOption.deliveryDays, 'day')
-        const dateString = deliveryDate.format('dddd, MMMM D')
+        calculateDeliveryDate(deliveryOption)
 
         productsInCartHTML += `
     <div class="cart-item-container js-cart-item-container js-cart-item-container-${element.id}" data-product-id="${element.id}">
         <div class="delivery-date">
-            Delivery date: ${dateString}
+            Delivery date: ${calculateDeliveryDate(deliveryOption)}
         </div>
 
         <div class="cart-item-details-grid">
@@ -74,10 +74,6 @@ export function renderOrderSummary() {
     function deliveryOptionsHTML(element, cartItem) {
         let html = ''
         deliveryOptions.forEach((deliveryOption) => {
-            const today = dayjs()
-            const deliveryDate = today.add(deliveryOption.deliveryDays, 'day')
-            const dateString = deliveryDate.format('dddd, MMMM D')
-
             const isChecked =
                 deliveryOption.id === cartItem.deliveryOptionId ? 'checked' : ''
 
@@ -92,7 +88,7 @@ export function renderOrderSummary() {
             />
             <div>
                 <div class="delivery-option-date js-delivery-option-date">
-                    ${dateString}
+                    ${calculateDeliveryDate(deliveryOption)}
                 </div>
                 <div class="delivery-option-price">
                     ${
@@ -276,11 +272,11 @@ orderSummary.addEventListener('keydown', (event) => {
     renderPaymentSummary()
 })
 
-updateCartQuantity()
-function updateCartQuantity() {
-    document.querySelector('.js-header-products-quantity').innerHTML =
-        `${getCartQuantity()} items`
-}
+// updateCartQuantity()
+// function updateCartQuantity() {
+//     document.querySelector('.js-header-products-quantity').innerHTML =
+//         `${getCartQuantity()} items`
+// }
 
 function saveQuantity(productId, link) {
     const container = link.closest('.cart-item-container')
