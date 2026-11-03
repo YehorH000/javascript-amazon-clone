@@ -61,3 +61,9 @@ export function getCartQuantity() {
     }
     return totalQuantity
 }
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
+    const deliveryProduct = cart.find((product) => product.id === productId)
+    deliveryProduct.deliveryOptionId = deliveryOptionId
+    saveToStorage()
+}

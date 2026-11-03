@@ -3,6 +3,7 @@ import {
     removeFromCart,
     getCartQuantity,
     saveToStorage,
+    updateDeliveryOption,
 } from '../data/cart.js'
 import { products } from '../data/products.js'
 import { formatCurrency } from './utils/money.js'
@@ -58,7 +59,7 @@ cart.forEach((item) => {
                 </div>
             </div>
 
-            <div class="delivery-options">
+            <div class="delivery-options js-delivery-options">
                 <div class="delivery-options-title">
                     Choose a delivery option:
                 </div>
@@ -78,15 +79,17 @@ function deliveryOptionsHTML(element, cartItem) {
         const isChecked =
             deliveryOption.id === cartItem.deliveryOptionId ? 'checked' : ''
 
-        html += `<div class="delivery-option">
+        html += `
+        <div class="delivery-option js-delivery-option" >
             <input
                 type="radio"
                 ${isChecked}
-                class="delivery-option-input"
+                class="delivery-option-input js-delivery-option-input"
                 name="delivery-option-${element.id}"
+                data-delivery-option-id="${deliveryOption.id}"
             />
             <div>
-                <div class="delivery-option-date js-delivery-option-date" data-shipping-type="paid-fast">
+                <div class="delivery-option-date js-delivery-option-date">
                     ${dateString}
                 </div>
                 <div class="delivery-option-price">
@@ -208,6 +211,11 @@ orderSummary.addEventListener('click', (event) => {
         saveQuantity(productId, container)
 
         container.classList.remove('is-edititing-quantity')
+    } else if (event.target.classList.contains('js-delivery-option-input')) {
+        const deliveryOptionId = event.target.dataset.deliveryOptionId
+        updateDeliveryOption(productId, deliveryOptionId)
+        // console.log(event.target)
+        // console.log(cart)
     }
 
     // console.log(container)
