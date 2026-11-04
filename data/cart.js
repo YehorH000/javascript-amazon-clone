@@ -32,7 +32,11 @@ export function addToCart(productId) {
     if (element) {
         element.quantity += Number(selectorQuantity)
     } else {
-        cart.push({ id: productId, quantity: 1, deliveryOptionId: '1' })
+        cart.push({
+            id: productId,
+            quantity: Number(selectorQuantity),
+            deliveryOptionId: '1',
+        })
     }
 
     saveToStorage()
