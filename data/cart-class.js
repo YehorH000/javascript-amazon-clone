@@ -1,9 +1,9 @@
 class Cart {
-    localStorageKey
-    cartItems = JSON.parse(localStorage.getItem(this.localStorageKey)) || []
+    #localStorageKey
+    cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || []
 
     constructor(localStorageKey) {
-        this.localStorageKey = localStorageKey
+        this.#localStorageKey = localStorageKey
     }
 
     addToCart(productId) {
@@ -52,7 +52,7 @@ class Cart {
     }
     saveToStorage() {
         localStorage.setItem(
-            this.localStorageKey,
+            this.#localStorageKey,
             JSON.stringify(this.cartItems),
         )
     }
