@@ -267,6 +267,7 @@ orderSummary.addEventListener('keydown', (event) => {
         if (event.key == 'Enter') {
             saveQuantity(productId, container)
             // console.log(item)
+            container.classList.remove('is-edititing-quantity')
         }
     }
     renderPaymentSummary()
