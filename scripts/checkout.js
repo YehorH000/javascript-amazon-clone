@@ -7,7 +7,16 @@ import { loadProducts } from '../data/products.js'
 // import '../data/car.js'
 // import '../data/cart-class.js'
 
-loadProducts(renderPaymentSummary)
-loadProducts(renderOrderSummary)
+new Promise((resolve) => {
+    loadProducts(() => {
+        resolve()
+    })
+}).then(() => {
+    renderPaymentSummary()
+    renderOrderSummary()
+})
+
+// loadProducts(renderPaymentSummary)
+// loadProducts(renderOrderSummary)
 
 updateCartQuantity()
