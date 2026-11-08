@@ -1,11 +1,14 @@
 import { cart, addToCart, getCartQuantity } from '../data/cart.js'
-import { products } from '../data/products.js'
+import { products, loadProducts } from '../data/products.js'
 // import { formatCurrency } from './utils/money.js'
 
-let productsHTML = ''
+loadProducts(renderProductsGrid)
 
-products.forEach((product) => {
-    productsHTML += `
+function renderProductsGrid() {
+    let productsHTML = ''
+
+    products.forEach((product) => {
+        productsHTML += `
     <div class="product-container">
         <div class="product-image-container">
             <img
@@ -27,7 +30,7 @@ products.forEach((product) => {
         </div>
 
         <div class="product-price">${product.getPrice()}</div>
- 
+
         <div class="product-quantity-container">
             <select class="js-quantity-selector-${product.id}">
                 <option selected value="1">1</option>
@@ -57,42 +60,43 @@ products.forEach((product) => {
         </button>
     </div>
     `
-})
-
-document.querySelector('.js-products-grid').innerHTML = productsHTML
-
-let cartHTML = ''
-let timeoutId
-
-updateCartQuantity()
-
-function updateCartQuantity() {
-    document.querySelector('.js-cart-quantity').innerHTML =
-        getCartQuantity() || ''
-    // console.log(getCartQuantity())
-}
-
-function updateCartNotification(productId) {
-    const addedMesNotification = document.querySelector(
-        `.js-added-to-cart-${productId}`,
-    )
-    addedMesNotification.classList.add('is-visible')
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => {
-        addedMesNotification.classList.remove('is-visible')
-    }, 2000)
-}
-
-document.querySelectorAll('.js-add-to-cart').forEach((button) => {
-    button.addEventListener('click', () => {
-        // console.log(button.dataset.productName)
-        // const productId = button.dataset.productId
-        const { productId } = button.dataset
-
-        addToCart(productId)
-        updateCartQuantity()
-        updateCartNotification(productId)
-
-        console.log(cart)
     })
-})
+
+    document.querySelector('.js-products-grid').innerHTML = productsHTML
+
+    let cartHTML = ''
+    let timeoutId
+
+    updateCartQuantity()
+
+    function updateCartQuantity() {
+        document.querySelector('.js-cart-quantity').innerHTML =
+            getCartQuantity() || ''
+        // console.log(getCartQuantity())
+    }
+
+    function updateCartNotification(productId) {
+        const addedMesNotification = document.querySelector(
+            `.js-added-to-cart-${productId}`,
+        )
+        addedMesNotification.classList.add('is-visible')
+        clearTimeout(timeoutId)
+        timeoutId = setTimeout(() => {
+            addedMesNotification.classList.remove('is-visible')
+        }, 2000)
+    }
+
+    document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+        button.addEventListener('click', () => {
+            // console.log(button.dataset.productName)
+            // const productId = button.dataset.productId
+            const { productId } = button.dataset
+
+            addToCart(productId)
+            updateCartQuantity()
+            updateCartNotification(productId)
+
+            console.log(cart)
+        })
+    })
+}

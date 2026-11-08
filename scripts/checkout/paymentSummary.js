@@ -1,10 +1,12 @@
-import { products } from '../../data/products.js'
+import { products, loadProducts } from '../../data/products.js'
 import { deliveryOptions } from '../../data/deliveryOptions.js'
 import { cart, getCartQuantity } from '../../data/cart.js'
 import { formatCurrency } from '../utils/money.js'
+
 export function renderPaymentSummary() {
     let productsPrice = 0
     let shippingPrice = 0
+
     for (let productInCart of cart) {
         const product = products.find((item) => item.id === productInCart.id)
         const deliveryOption = deliveryOptions.find(
@@ -31,4 +33,4 @@ export function renderPaymentSummary() {
     document.querySelector('.js-payment-summary-total-price').innerHTML =
         `$${formatCurrency(totalPrice)}`
 }
-renderPaymentSummary()
+// renderPaymentSummary()
