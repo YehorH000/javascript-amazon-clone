@@ -1,11 +1,11 @@
-import { products, loadProducts } from '../../data/products.js'
+import { products, loadProductsFetch } from '../../data/products.js'
 import { Product } from '../../data/Product.js'
 // import { Appliance } from '../../data/Appliance.js'
 import { Clothing } from '../../data/Clothing.js'
 
 describe('products catalog mapping:', () => {
     it('creates a Product and Clothing classes for a catalog item', (done) => {
-        loadProducts(() => {
+        loadProductsFetch().then(() => {
             const productRegular = products.find(
                 (item) => item.id === 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
             )
