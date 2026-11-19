@@ -525,27 +525,47 @@ import { Clothing } from './Clothing.js'
 
 export let products = []
 
-export function loadProductsFetch() {
-    const promise = fetch('https://supersimplebackend.dev/products')
-        .then((response) => {
-            return response.json()
-        })
-        .then((productsData) => {
-            products = productsData.map((product) => {
-                if (product.type === 'clothing') {
-                    return new Clothing(product)
-                } else if (product.type === 'appliances') {
-                    return new Appliance(product)
-                }
+// export function loadProductsFetch() {
+//     const promise = fetch('https://supersimplebackend.dev/products')
+//         .then((response) => {
+//             return response.json()
+//         })
+//         .then((productsData) => {
+//             products = productsData.map((product) => {
+//                 if (product.type === 'clothing') {
+//                     return new Clothing(product)
+//                 } else if (product.type === 'appliances') {
+//                     return new Appliance(product)
+//                 }
 
-                return new Product(product)
-            })
-            // console.log(products)
+//                 return new Product(product)
+//             })
+//             // console.log(products)
 
-            // fun()
-        })
+//             // fun()
+//         })
 
-    return promise
+//     return promise
+// }
+
+export async function loadProductsFetch() {
+    const response = await fetch('https://supersimplebackend.dev/products')
+
+    if (!response.ok) {
+        throw new Error(`${response.status}`)
+    }
+
+    const productsData = await response.json()
+
+    products = productsData.map((product) => {
+        if (product.type === 'clothing') {
+            return new Clothing(product)
+        } else if (product.type === 'appliances') {
+            return new Appliance(product)
+        }
+
+        return new Product(product)
+    })
 }
 
 // export function loadProducts(fun) {

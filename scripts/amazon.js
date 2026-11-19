@@ -2,9 +2,21 @@ import { cart, addToCart, getCartQuantity } from '../data/cart.js'
 import { products, loadProductsFetch } from '../data/products.js'
 // import { formatCurrency } from './utils/money.js'
 
-loadProductsFetch().then(() => {
-    renderProductsGrid()
-})
+// loadProductsFetch().then(() => {
+//     renderProductsGrid()
+// })
+
+async function initAmazonPage() {
+    try {
+        await loadProductsFetch()
+        renderProductsGrid()
+    } catch (error) {
+        console.error('Products disappeared:', error)
+        document.querySelector('.js-order-summary').textContent = 'Reload page.'
+    }
+}
+
+initAmazonPage()
 
 function renderProductsGrid() {
     let productsHTML = ''
