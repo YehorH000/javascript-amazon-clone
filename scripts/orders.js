@@ -53,9 +53,9 @@ function renderOrders() {
             </div>
 
             <div class="product-actions">
-                <a href="tracking.html">
+                <a >
                     <button
-                        class="track-package-button button-secondary"
+                        class="track-package-button js-track-package-button button-secondary" data-product-id="${orderElement.productId}" data-order-id="${order.id}"
                     >
                         Track package
                     </button>
@@ -97,6 +97,16 @@ function renderOrders() {
         element.addEventListener('click', () => {
             addToCart(element.dataset.productId)
             updateCartQuantity()
+        })
+    })
+
+    document.querySelectorAll('.js-track-package-button').forEach((element) => {
+        element.addEventListener('click', () => {
+            const url = new URL('tracking.html', window.location.origin)
+            url.searchParams.set('orderId', element.dataset.orderId)
+            url.searchParams.set('productId', element.dataset.productId)
+            console.log(url)
+            window.location.href = url.href
         })
     })
 }
