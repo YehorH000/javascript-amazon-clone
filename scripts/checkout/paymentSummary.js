@@ -1,9 +1,9 @@
 import { products } from '../../data/products.js'
-import { addOrder } from '../../data/order.js'
+import { addOrder } from '../../data/orders.js'
 import { deliveryOptions } from '../../data/deliveryOptions.js'
 import { cart, getCartQuantity } from '../../data/cart.js'
 import { formatCurrency } from '../utils/money.js'
-
+s
 export function renderPaymentSummary() {
     let productsPrice = 0
     let shippingPrice = 0
