@@ -1,7 +1,12 @@
 import { orders } from '../data/orders.js'
 import { products, loadProductsFetch } from '../data/products.js'
 import { formatCurrency } from './utils/money.js'
-import { cart, getCartQuantity } from '../data/cart.js'
+import {
+    cart,
+    getCartQuantity,
+    addToCart,
+    updateCartQuantity,
+} from '../data/cart.js'
 
 console.log(orders[0])
 // console.log(orders)
@@ -10,10 +15,7 @@ async function initOrdersPage() {
     try {
         await loadProductsFetch()
         renderOrders()
-        // updateCartQuantity()
-        document.querySelector('.js-cart-quantity').innerHTML =
-            getCartQuantity() || ''
-        console.log(cart)
+        updateCartQuantity()
     } catch (error) {
         console.error('Products disappeared:', error)
         document.querySelector('.js-order-summary').textContent = 'Reload page.'
@@ -102,7 +104,9 @@ function renderOrders() {
 
     document.querySelectorAll('.js-buy-again-button').forEach((element) => {
         element.addEventListener('click', () => {
-            console.log(element)
+            // console.log(element.dataset.productId)
+            addToCart(element.dataset.productId)
+            updateCartQuantity()
         })
     })
 }

@@ -26,9 +26,10 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || []
 
 export function addToCart(productId) {
     const element = cart.find((item) => item.id === productId)
-    const selectorQuantity = document.querySelector(
+    const nodeQuantity = document.querySelector(
         `.js-quantity-selector-${productId}`,
-    ).value
+    )
+    const selectorQuantity = nodeQuantity ? nodeQuantity.value : 1
     if (element) {
         element.quantity += Number(selectorQuantity)
     } else {

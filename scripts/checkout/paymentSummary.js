@@ -65,12 +65,17 @@ document
                     }),
                 },
             )
+            if (!response.ok) throw response
             const order = await response.json()
             // console.log(order)
             addOrder(order)
             clearCart()
         } catch (error) {
-            console.error(error)
+            if (error.status === 400) {
+                console.error(`Error 400`)
+            } else {
+                console.error(error)
+            }
         }
 
         window.location.href = 'orders.html'
