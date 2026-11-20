@@ -1,15 +1,7 @@
-import { orders } from '../data/orders.js'
+import { orders, clearOrders } from '../data/orders.js'
 import { products, loadProductsFetch } from '../data/products.js'
 import { formatCurrency } from './utils/money.js'
-import {
-    cart,
-    getCartQuantity,
-    addToCart,
-    updateCartQuantity,
-} from '../data/cart.js'
-
-console.log(orders[0])
-// console.log(orders)
+import { addToCart, updateCartQuantity } from '../data/cart.js'
 
 async function initOrdersPage() {
     try {
@@ -33,7 +25,6 @@ function renderOrders() {
             const currentProduct = products.find(
                 (product) => orderElement.productId === product.id,
             )
-            // console.log(orderElement)
 
             productsHTML += `
             <div class="product-image-container">
@@ -104,7 +95,6 @@ function renderOrders() {
 
     document.querySelectorAll('.js-buy-again-button').forEach((element) => {
         element.addEventListener('click', () => {
-            // console.log(element.dataset.productId)
             addToCart(element.dataset.productId)
             updateCartQuantity()
         })
@@ -120,3 +110,8 @@ function formateDate(orderTime) {
 
     return formattedDate
 }
+
+document.querySelector('.js-clean-orders-btn').addEventListener('click', () => {
+    clearOrders()
+    renderOrders()
+})
