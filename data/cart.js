@@ -70,4 +70,16 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
     const deliveryProduct = cart.find((product) => product.id === productId)
     deliveryProduct.deliveryOptionId = deliveryOptionId
     saveToStorage()
+    updateCartQuantity()
+}
+
+export function clearCart() {
+    cart = []
+    saveToStorage()
+    updateCartQuantity()
+}
+
+export function updateCartQuantity() {
+    document.querySelector('.js-cart-quantity').innerHTML =
+        getCartQuantity() || ''
 }

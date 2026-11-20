@@ -1,7 +1,12 @@
 import { products } from '../../data/products.js'
 import { addOrder } from '../../data/orders.js'
 import { deliveryOptions } from '../../data/deliveryOptions.js'
-import { cart, getCartQuantity } from '../../data/cart.js'
+import {
+    cart,
+    getCartQuantity,
+    clearCart,
+    updateCartQuantity,
+} from '../../data/cart.js'
 import { formatCurrency } from '../utils/money.js'
 
 export function renderPaymentSummary() {
@@ -63,6 +68,7 @@ document
             const order = await response.json()
             // console.log(order)
             addOrder(order)
+            clearCart()
         } catch (error) {
             console.error(error)
         }
