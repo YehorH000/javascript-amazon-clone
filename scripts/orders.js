@@ -2,6 +2,7 @@ import { orders, clearOrders } from '../data/orders.js'
 import { products, loadProductsFetch } from '../data/products.js'
 import { formatCurrency } from './utils/money.js'
 import { addToCart, updateCartQuantity } from '../data/cart.js'
+import { formateDate } from './utils/time.js'
 
 async function initOrdersPage() {
     try {
@@ -109,16 +110,6 @@ function renderOrders() {
             window.location.href = url.href
         })
     })
-}
-
-function formateDate(orderTime) {
-    const date = new Date(orderTime)
-    const formattedDate = date.toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-    })
-
-    return formattedDate
 }
 
 document.querySelector('.js-clean-orders-btn').addEventListener('click', () => {
