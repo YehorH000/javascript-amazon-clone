@@ -1,31 +1,47 @@
 import { orders } from '../data/orders.js'
 import { products, loadProductsFetch } from '../data/products.js'
-import { formateDate } from './utils/time.js'
+import { formateDate, countTimeToDelivery } from './utils/time.js'
 
 const url = new URL(window.location.href)
 const orderId = url.searchParams.get('orderId')
 const productId = url.searchParams.get('productId')
+let currentOrder
+let currentProduct
+let currentProductInfo
 
 async function initTrackingPage() {
     try {
         await loadProductsFetch()
+        findTrackingDetails()
+        const calcOrderProgress = countTimeToDelivery(
+            currentOrder,
+            currentProduct,
+        )
+
+        document.querySelector('.progress-bar').style.width =
+            `${calcOrderProgress}%`
+
+        renderProgressLabels(calcOrderProgress)
+
         renderProduct()
     } catch (error) {
-        console.error('Products disappeared:', error)
+        console.error('Error appeared:', error)
     }
 }
 
 initTrackingPage()
 
-function renderProduct() {
-    const currentOrder = orders.find((order) => orderId === order.id)
-    const currentProduct = currentOrder.products.find(
+function findTrackingDetails() {
+    currentOrder = orders.find((order) => orderId === order.id)
+    currentProduct = currentOrder.products.find(
         (product) => productId === product.productId,
     )
-    const currentProductInfo = products.find(
+    currentProductInfo = products.find(
         (product) => currentProduct.productId === product.id,
     )
+}
 
+function renderProduct() {
     const productHTML = `
     <div class="delivery-date js-delivery-date">
         Arriving on ${formateDate(currentProduct.estimatedDeliveryTime)}
@@ -42,5 +58,15 @@ function renderProduct() {
     `
     document.querySelector('.js-product-container').innerHTML = productHTML
 
-    console.log(currentProduct)
+    // console.log(currentProduct)
+}
+
+function renderProgressLabels(calcOrderProgress) {
+    const progressLabels = `
+    <div class="progress-label ${calcOrderProgress <= 49 ? 'current-status' : ''}">Preparing</div>
+    <div class="progress-label ${calcOrderProgress > 49 && calcOrderProgress < 100 ? 'current-status' : ''}">Shipped</div>
+    <div class="progress-label ${calcOrderProgress === 100 ? 'current-status' : ''}">Delivered</div>
+    `
+    document.querySelector('.js-progress-labels-container').innerHTML =
+        progressLabels
 }
