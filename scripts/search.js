@@ -15,7 +15,7 @@ function getSearchValue() {
 }
 
 function createSearchURL() {
-    const url = new URL('index.html', window.location.origin)
+    const url = new URL('amazon.html', window.location.origin)
     url.searchParams.set('search', getSearchValue())
     window.location.href = url.href
 }
