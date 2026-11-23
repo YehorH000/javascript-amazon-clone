@@ -106,7 +106,7 @@ function renderOrders() {
             const url = new URL('tracking.html', window.location.origin)
             url.searchParams.set('orderId', element.dataset.orderId)
             url.searchParams.set('productId', element.dataset.productId)
-            console.log(url)
+            // console.log(url)
             window.location.href = url.href
         })
     })

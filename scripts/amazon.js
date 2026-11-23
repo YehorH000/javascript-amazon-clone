@@ -1,6 +1,6 @@
 import { cart, addToCart, updateCartQuantity } from '../data/cart.js'
 import { products, loadProductsFetch } from '../data/products.js'
-// import { formatCurrency } from './utils/money.js'
+import { filterProducts } from '../scripts/search.js'
 
 // loadProductsFetch().then(() => {
 //     renderProductsGrid()
@@ -9,7 +9,7 @@ import { products, loadProductsFetch } from '../data/products.js'
 async function initAmazonPage() {
     try {
         await loadProductsFetch()
-        renderProductsGrid()
+        renderProductsGrid(filterProducts())
     } catch (error) {
         console.error('Products disappeared:', error)
         document.querySelector('.js-order-summary').textContent = 'Reload page.'
@@ -18,10 +18,10 @@ async function initAmazonPage() {
 
 initAmazonPage()
 
-function renderProductsGrid() {
+function renderProductsGrid(productsToRender) {
     let productsHTML = ''
 
-    products.forEach((product) => {
+    productsToRender.forEach((product) => {
         productsHTML += `
     <div class="product-container">
         <div class="product-image-container">
