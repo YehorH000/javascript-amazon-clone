@@ -29,7 +29,11 @@ export function filterProducts() {
 
     document.querySelector('.search-bar').value = searchQuery
 
-    return products.filter((product) =>
-        product.name.toLowerCase().includes(normalizedSearchQuery),
+    return products.filter(
+        (product) =>
+            product.name.toLowerCase().includes(normalizedSearchQuery) ||
+            product.keywords.some((keyword) => {
+                return keyword.includes(normalizedSearchQuery)
+            }),
     )
 }
