@@ -81,6 +81,9 @@ export function clearCart() {
 }
 
 export function updateCartQuantity() {
-    document.querySelector('.js-cart-quantity').innerHTML =
-        getCartQuantity() || ''
+    const cartQuantityElement = document.querySelector('.js-cart-quantity')
+
+    if (cartQuantityElement) {
+        cartQuantityElement.innerHTML = getCartQuantity() || ''
+    }
 }
